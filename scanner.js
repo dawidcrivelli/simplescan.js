@@ -1,5 +1,4 @@
 const noble = require('noble')
-const logger = require('./logger')('Scanner')
 const fs = require('fs-extra')
 
 const filename = 'maclist.json'
@@ -8,7 +7,7 @@ const filename = 'maclist.json'
 // BLE error handler
 /* ****************************************** */
 function BleFailure() {
-    logger.error(`BLE failure detected. Exiting in order to be restarted`)
+    console.error(`BLE failure detected. Exiting in order to be restarted`)
     process.exit(0)
 }
 
@@ -107,7 +106,7 @@ function processRawAdvertisement(adv) {
 /* ****************************************** */
 
 noble.on('stateChange', (state) => {
-    if (state !== 'poweredOn') logger.warn(`BLE adapter status changed!`)
+    if (state !== 'poweredOn') console.warn(`BLE adapter status changed!`)
     if (state === 'poweredOn' && scanner.isScanning) { scanner.start() }
     if (!scanner.isScanning) { scanner.stop() }
 })
@@ -123,32 +122,32 @@ noble.on('raw_discover', (peripheral) => {
 let scannerTimeout = null
 noble.on('scanStart', () => {
     clearTimeout(scannerTimeout)
-    logger.warn('Scan started.')
+    console.warn('Scan started.')
 })
 
 noble.on('scanStop', () => {
-    logger.warn('Scan stopped.')
+    console.warn('Scan stopped.')
     if (scanner.isScanning) {
         scanner.start()
-        logger.error(`The scan should not have stopped. Restarting.`)
+        console.error(`The scan should not have stopped. Restarting.`)
     }
     scannerTimeout = setTimeout(() => {
-        logger.error(`ScanStop Timeout. The scan has been stopped for too long. Failure detected`)
+        console.error(`ScanStop Timeout. The scan has been stopped for too long. Failure detected`)
         BleFailure()
     }, config.BeaconConnectionTimeout)
 })
 
-noble.on('warning', (warning) => logger.warn(`Noble warning: ${warning}`))
-noble.on('error', (warning) => logger.error(`Noble error: ${warning}`))
+noble.on('warning', (warning) => console.warn(`Noble warning: ${warning}`))
+noble.on('error', (warning) => console.error(`Noble error: ${warning}`))
 
 
-logger.info(`Put an array of mac addresses, JSON formatted, in ${filename} in order to print only them!`)
+console.info(`Put an array of mac addresses, JSON formatted, in ${filename} in order to print only them!`)
 if (fs.existsSync(filename)) {
     let configs = fs.readJSONSync(filename)
     scanner.macList.push(...configs)
-    logger.warn(`Config file with ${configs.length} MACs found`)
+    console.warn(`Config file with ${configs.length} MACs found`)
 } else {
-    logger.error(`Config file ${filename} not found`)
+    console.error(`Config file ${filename} not found`)
 }
 
 scanner.start()

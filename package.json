@@ -19,7 +19,6 @@
   "dependencies": {
     "bluetooth-hci-socket": "^0.5.1",
     "noble": "git+https://github.com/kontaktio/noble.git#raw_scans",
-    "fs-extra": "^7.0.1",
-    "winston": "^3.2.1"
+    "fs-extra": "^7.0.1"
   }
 }
