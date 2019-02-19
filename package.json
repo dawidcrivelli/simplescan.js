@@ -1,0 +1,25 @@
+{
+  "name": "simplescanner.js",
+  "version": "0.5.4",
+  "main": "scanner.js",
+  "author": "Kontakt.io",
+  "scripts": {
+    "start": "node ./scanner.js",
+    "lint": "eslint --ignore-path .gitignore ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kontaktio/nodejs-gateway.git"
+  },
+  "engines": {
+    "node": ">=8.15.0"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "bluetooth-hci-socket": "^0.5.1",
+    "noble": "git+https://github.com/kontaktio/noble.git#raw_scans",
+    "fs-extra": "^7.0.1",
+    "winston": "^3.2.1"
+  }
+}
